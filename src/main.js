@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 // ───── CURSOR ─────
 const cursor = document.getElementById('cursor');
 const cursorRing = document.getElementById('cursor-ring');
@@ -456,20 +458,6 @@ window.setView = function (v) {
     updateCamera();
   }
 };
-
-window.exportModel = function (type) {
-  const labels = { glb: 'GLB', obj: 'OBJ', pdf: 'PDF Report', img: 'Screenshot' };
-  showNotification('Exporting ' + labels[type] + '... (demo mode)', 'info');
-};
-
-window.addEventListener('resize', () => {
-  if (!renderer) return;
-  const canvas = document.getElementById('three-canvas');
-  const w = canvas.parentElement.clientWidth;
-  renderer.setSize(w, 600);
-  camera.aspect = w / 600;
-  camera.updateProjectionMatrix();
-});
 
 window.exportModel = function (type) {
   const labels = { glb: 'GLB', obj: 'OBJ', pdf: 'PDF Report', img: 'Screenshot' };
