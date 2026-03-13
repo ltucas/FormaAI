@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FORMA — AI Architectural 3D Renderer</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./src/styles/main.css">
+</head>
+<body>
+
+  <!-- CURSOR -->
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">FORMA<span> / AI</span></div>
+    <ul class="nav-links">
+      <li><a href="#upload">Studio</a></li>
+      <li><a href="#viewer">Viewer</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#workflow">Workflow</a></li>
+    </ul>
+    <div class="nav-badge">
+      <div class="status-dot"></div>
+      <span>Engine Online</span>
+    </div>
+  </nav>
+
+  <!-- NOTIFICATION -->
+  <div class="notification" id="notification">
+    <div class="notif-dot info" id="notif-dot"></div>
+    <span id="notif-msg">Ready</span>
+  </div>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-orb"></div>
+
+    <div class="hero-tag">
+      <span>◆</span> Next-Gen Architectural Intelligence
+    </div>
+
+    <h1 class="hero-title">
+      From Plan<br>To <em>Space</em>
+    </h1>
+
+    <p class="hero-sub">
+      Transform 2D architectural floor plans into immersive, interactive 3D models in seconds. Powered by AI. Built for architects.
+    </p>
+
+    <div class="hero-cta">
+      <a href="#upload" class="btn-primary">Open Studio</a>
+      <a href="#features" class="btn-ghost">Explore Features</a>
+    </div>
+
+    <div class="scroll-hint">
+      <div class="scroll-line"></div>
+      Scroll
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat-item reveal">
+      <div class="stat-num">0.3<span style="font-size:20px">s</span></div>
+      <div class="stat-label">Avg. Processing Time</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-num">99<span style="font-size:20px">%</span></div>
+      <div class="stat-label">Wall Detection Accuracy</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-num">14<span style="font-size:20px">+</span></div>
+      <div class="stat-label">Supported File Formats</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Model Complexity</div>
+    </div>
+  </div>
+
+  <!-- UPLOAD STUDIO -->
+  <section id="upload">
+    <div class="section-inner">
+      <div class="section-label reveal">AI Studio</div>
+      <h2 class="section-title reveal">Import & <em>Generate</em></h2>
+      <p style="font-size:12px; color:var(--text-dim); max-width:500px; line-height:1.8;" class="reveal">
+        Upload your architectural floor plan PDF or image. Our AI engine analyzes structural elements, identifies walls, rooms, doors and windows, then constructs a fully navigable 3D model.
+      </p>
+
+      <div class="upload-layout">
+        <!-- LEFT: UPLOAD -->
+        <div>
+          <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+            <div class="upload-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+                <polyline points="10 9 9 9 8 9"/>
+              </svg>
+            </div>
+            <div class="upload-title">Drop your floor plan here</div>
+            <div class="upload-sub">
+              Drag and drop a PDF or image file,<br>or click to browse your files.
+            </div>
+            <div class="upload-formats">
+              <span class="format-tag">PDF</span>
+              <span class="format-tag">PNG</span>
+              <span class="format-tag">JPG</span>
+              <span class="format-tag">DWG</span>
+              <span class="format-tag">SVG</span>
+            </div>
+            <button class="upload-btn">Browse Files</button>
+          </div>
+          <input type="file" id="fileInput" accept=".pdf,.png,.jpg,.jpeg,.svg">
+
+          <div class="file-preview" id="filePreview">
+            <div class="file-preview-icon">📄</div>
+            <div class="file-preview-info">
+              <div class="file-preview-name" id="fileName">—</div>
+              <div class="file-preview-size" id="fileSize">—</div>
+            </div>
+            <button class="file-preview-remove" onclick="removeFile()">Remove</button>
+          </div>
+        </div>
+
+        <!-- RIGHT: SETTINGS -->
+        <div class="settings-panel">
+          <div class="settings-title">Generation Settings</div>
+
+          <div class="setting-group">
+            <div class="setting-label">Building Type</div>
+            <select class="setting-select" id="buildingType">
+              <option>Residential — Single Family</option>
+              <option>Residential — Multi Unit</option>
+              <option>Commercial — Office</option>
+              <option>Commercial — Retail</option>
+              <option>Industrial — Warehouse</option>
+              <option>Mixed Use</option>
+            </select>
+          </div>
+
+          <div class="setting-group">
+            <div class="setting-label">Wall Height</div>
+            <div class="setting-slider-row">
+              <input type="range" class="setting-slider" id="wallHeight" min="2" max="6" step="0.1" value="3">
+              <span class="slider-val" id="wallHeightVal">3.0m</span>
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <div class="setting-label">Detail Level</div>
+            <select class="setting-select" id="detailLevel">
+              <option>Schematic — Fast</option>
+              <option selected>Standard — Balanced</option>
+              <option>High Definition — Detailed</option>
+              <option>Photorealistic — Premium</option>
+            </select>
+          </div>
+
+          <div class="setting-group">
+            <div class="setting-label">Render Style</div>
+            <select class="setting-select" id="renderStyle">
+              <option>Wireframe</option>
+              <option selected>Solid + Edges</option>
+              <option>Material Preview</option>
+              <option>Technical Drawing</option>
+            </select>
+          </div>
+
+          <div class="toggle-row">
+            <span class="toggle-label">Auto-detect doors & windows</span>
+            <div class="toggle on" id="toggleDoors" onclick="this.classList.toggle('on')"></div>
+          </div>
+          <div class="toggle-row">
+            <span class="toggle-label">Generate room labels</span>
+            <div class="toggle on" id="toggleLabels" onclick="this.classList.toggle('on')"></div>
+          </div>
+          <div class="toggle-row">
+            <span class="toggle-label">Include furniture placeholder</span>
+            <div class="toggle" id="toggleFurniture" onclick="this.classList.toggle('on')"></div>
+          </div>
+
+          <button class="generate-btn" id="generateBtn" onclick="startGeneration()">
+            ◆ Generate 3D Model
+          </button>
+
+          <div class="progress-section" id="progressSection">
+            <div class="progress-label">Processing — <span id="progressPct">0%</span></div>
+            <div class="progress-bar">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-steps" id="progressSteps">
+              <div class="progress-step" id="step1"><div class="step-dot"></div> Analyzing floor plan geometry</div>
+              <div class="progress-step" id="step2"><div class="step-dot"></div> Detecting structural elements</div>
+              <div class="progress-step" id="step3"><div class="step-dot"></div> Building 3D mesh topology</div>
+              <div class="progress-step" id="step4"><div class="step-dot"></div> Applying materials & lighting</div>
+              <div class="progress-step" id="step5"><div class="step-dot"></div> Finalizing & optimizing</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3D VIEWER -->
+  <section id="viewer">
+    <div class="section-inner">
+      <div class="viewer-header">
+        <div>
+          <div class="section-label reveal">Interactive Viewer</div>
+          <h2 class="section-title reveal" style="margin-bottom:0">3D <em>Model</em></h2>
+        </div>
+        <div class="viewer-controls">
+          <button class="ctrl-btn active" id="viewOrbit" onclick="setView('orbit')">Orbit</button>
+          <button class="ctrl-btn" id="viewTop" onclick="setView('top')">Top View</button>
+          <button class="ctrl-btn" id="viewFront" onclick="setView('front')">Front</button>
+          <button class="ctrl-btn" id="viewIso" onclick="setView('iso')">Isometric</button>
+        </div>
+      </div>
+
+      <div class="viewer-layout">
+        <div>
+          <div class="viewer-canvas-wrap">
+            <canvas id="three-canvas"></canvas>
+            <div class="canvas-placeholder" id="canvasPlaceholder">
+              <div class="placeholder-icon">⬛</div>
+              <div class="placeholder-text">No model loaded — upload a floor plan to begin</div>
+            </div>
+            <div class="canvas-overlay">
+              <div class="canvas-corner tl"></div>
+              <div class="canvas-corner tr"></div>
+              <div class="canvas-corner bl"></div>
+              <div class="canvas-corner br"></div>
+            </div>
+            <div class="canvas-info" id="canvasInfo">
+              Drag to rotate · Scroll to zoom · Right-click to pan
+            </div>
+          </div>
+          <div class="export-row">
+            <button class="export-btn" onclick="exportModel('glb')">↓ Export GLB</button>
+            <button class="export-btn" onclick="exportModel('obj')">↓ Export OBJ</button>
+            <button class="export-btn" onclick="exportModel('pdf')">↓ Export PDF</button>
+            <button class="export-btn" onclick="exportModel('img')">↓ Screenshot</button>
+          </div>
+        </div>
+
+        <!-- SIDEBAR -->
+        <div>
+          <div class="model-stats" id="modelStats">
+            <div class="model-stat-title">Model Information</div>
+            <div class="model-stat-row"><span class="msr-key">Status</span><span class="msr-val" id="statStatus">—</span></div>
+            <div class="model-stat-row"><span class="msr-key">Vertices</span><span class="msr-val" id="statVerts">—</span></div>
+            <div class="model-stat-row"><span class="msr-key">Faces</span><span class="msr-val" id="statFaces">—</span></div>
+            <div class="model-stat-row"><span class="msr-key">Rooms</span><span class="msr-val" id="statRooms">—</span></div>
+            <div class="model-stat-row"><span class="msr-key">Floor Area</span><span class="msr-val" id="statArea">—</span></div>
+            <div class="model-stat-row"><span class="msr-key">Wall Height</span><span class="msr-val" id="statHeight">—</span></div>
+            <div class="model-stat-row"><span class="msr-key">Generated</span><span class="msr-val" id="statTime">—</span></div>
+          </div>
+
+          <div class="model-stats" style="margin-top:12px">
+            <div class="model-stat-title">Scene Layers</div>
+            <div class="layer-list">
+              <div class="layer-item"><div class="layer-color" style="background:#c8a96e"></div> Structural Walls</div>
+              <div class="layer-item"><div class="layer-color" style="background:#5c9bd6"></div> Windows & Glass</div>
+              <div class="layer-item"><div class="layer-color" style="background:#7a6952"></div> Doors</div>
+              <div class="layer-item"><div class="layer-color" style="background:#2d3a2d"></div> Floor Slabs</div>
+              <div class="layer-item"><div class="layer-color" style="background:#1a1a2e"></div> Ceiling Planes</div>
+              <div class="layer-item"><div class="layer-color" style="background:#4c4c4c"></div> Columns</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="section-inner">
+      <div class="section-label reveal">Capabilities</div>
+      <h2 class="section-title reveal">What <em>Forma</em> Does</h2>
+
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <div class="feature-num">01</div>
+          <div class="feature-title">Intelligent Wall Detection</div>
+          <div class="feature-desc">Computer vision algorithms identify structural walls, partition walls, load-bearing elements, and facade outlines with 99% precision.</div>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-num">02</div>
+          <div class="feature-title">Parametric Room Analysis</div>
+          <div class="feature-desc">Each enclosed space is automatically classified, labeled, and dimensioned. Room area calculations are generated in real-time.</div>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-num">03</div>
+          <div class="feature-title">Automated Door & Window Insertion</div>
+          <div class="feature-desc">Openings in walls are recognized and replaced with parametric 3D door and window objects, maintaining original dimensions.</div>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-num">04</div>
+          <div class="feature-title">Material Intelligence</div>
+          <div class="feature-desc">AI applies appropriate materials based on room type and structural context — concrete walls, glass facades, wooden flooring.</div>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-num">05</div>
+          <div class="feature-title">Multi-Format Export</div>
+          <div class="feature-desc">Export your 3D model to industry-standard formats including GLB, OBJ, IFC, and FBX for use in any architectural software.</div>
+        </div>
+        <div class="feature-card reveal">
+          <div class="feature-num">06</div>
+          <div class="feature-title">Real-Time Collaboration</div>
+          <div class="feature-desc">Share live 3D model links with clients and team members. Annotations, markups, and versioning built into the platform.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORKFLOW -->
+  <section id="workflow">
+    <div class="section-inner">
+      <div class="section-label reveal">Process</div>
+      <h2 class="section-title reveal">How It <em>Works</em></h2>
+
+      <div class="workflow-steps">
+        <div class="workflow-step reveal">
+          <div class="workflow-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <div class="workflow-step-title">Upload Plan</div>
+          <div class="workflow-step-desc">Import your architectural drawing as PDF, PNG, or DWG file.</div>
+        </div>
+        <div class="workflow-step reveal">
+          <div class="workflow-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <div class="workflow-step-title">AI Analysis</div>
+          <div class="workflow-step-desc">Our model scans, identifies, and interprets every structural element.</div>
+        </div>
+        <div class="workflow-step reveal">
+          <div class="workflow-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <div class="workflow-step-title">3D Generation</div>
+          <div class="workflow-step-desc">A fully navigable 3D model is constructed and rendered instantly.</div>
+        </div>
+        <div class="workflow-step reveal">
+          <div class="workflow-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          </div>
+          <div class="workflow-step-title">Export & Share</div>
+          <div class="workflow-step-desc">Download in multiple formats or share a live viewer link.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="nav-logo">FORMA<span> / AI</span></span>
+        <p class="footer-desc">AI-powered architectural visualization platform. Transforming the way architects present and communicate spatial designs.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Platform</div>
+        <ul class="footer-links">
+          <li><a href="#">Studio</a></li>
+          <li><a href="#">3D Viewer</a></li>
+          <li><a href="#">Collaboration</a></li>
+          <li><a href="#">API Access</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#">About</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Legal</div>
+        <ul class="footer-links">
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Terms</a></li>
+          <li><a href="#">Security</a></li>
+          <li><a href="#">Licenses</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 FORMA AI. All rights reserved.</span>
+      <span>Built for architects who move fast.</span>
+    </div>
+  </footer>
+
+  <script src="./src/main.js"></script>
+</body>
+</html>
