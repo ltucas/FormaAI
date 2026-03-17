@@ -1,4 +1,5 @@
-import * as THREE from 'three';
+// Use a CDN import so this works without a bundler (opening via a simple web server).
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
 
 // ───── CURSOR ─────
 const cursor = document.getElementById('cursor');
@@ -78,6 +79,7 @@ if (uploadZone) {
 
 let selectedFile = null;
 let fileSeed = 0;
+let previewUrl = null;
 
 // Simple hash function for the file to create a seed
 function getFileSeed(file) {
@@ -97,11 +99,47 @@ function seededRandom(seed) {
 }
 
 window.handleFile = function (file) {
+  if (!(file instanceof File)) return;
+
+  // Basic type validation (accept list in HTML is not enforced for drag/drop)
+  const isPdf = file.type === 'application/pdf' || /\.pdf$/i.test(file.name);
+  const isImage = file.type.startsWith('image/') || /\.(png|jpe?g|gif|webp|svg)$/i.test(file.name);
+  if (!isPdf && !isImage) {
+    showNotification('Unsupported file. Please use PDF or an image.', 'error');
+    return;
+  }
+
   selectedFile = file;
   fileSeed = getFileSeed(file);
   document.getElementById('fileName').textContent = file.name;
-  document.getElementById('fileSize').textContent = (file.size / 1024).toFixed(1) + ' KB';
+  document.getElementById('fileSize').textContent =
+    file.size > 1024 * 1024
+      ? (file.size / (1024 * 1024)).toFixed(2) + ' MB'
+      : (file.size / 1024).toFixed(1) + ' KB';
   document.getElementById('filePreview').classList.add('visible');
+
+  // Render a real preview
+  if (previewUrl) URL.revokeObjectURL(previewUrl);
+  previewUrl = URL.createObjectURL(file);
+
+  const icon = document.getElementById('filePreviewIcon');
+  const img = document.getElementById('filePreviewImg');
+  const pdf = document.getElementById('filePreviewPdf');
+  if (img) img.style.display = 'none';
+  if (pdf) pdf.style.display = 'none';
+  if (icon) icon.style.display = 'grid';
+
+  if (isImage && img) {
+    img.src = previewUrl;
+    img.style.display = 'block';
+    if (icon) icon.style.display = 'none';
+  } else if (isPdf && pdf) {
+    // Some browsers block PDF embedding; if so, user still sees "file loaded" + can generate.
+    pdf.src = previewUrl;
+    pdf.style.display = 'block';
+    if (icon) icon.textContent = 'PDF';
+  }
+
   showNotification('File loaded: ' + file.name, 'info');
 };
 
@@ -110,6 +148,12 @@ window.removeFile = function () {
   fileSeed = 0;
   document.getElementById('filePreview').classList.remove('visible');
   document.getElementById('fileInput').value = '';
+  const img = document.getElementById('filePreviewImg');
+  const pdf = document.getElementById('filePreviewPdf');
+  if (img) img.src = '';
+  if (pdf) pdf.src = '';
+  if (previewUrl) URL.revokeObjectURL(previewUrl);
+  previewUrl = null;
   showNotification('File removed', 'info');
 };
 

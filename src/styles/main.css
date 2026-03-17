@@ -353,6 +353,7 @@ nav {
 /* SECTION */
 section {
   padding: 100px 0;
+  scroll-margin-top: 90px;
 }
 
 .section-inner {
@@ -1200,9 +1201,34 @@ footer {
   display: flex;
 }
 
+.file-preview-thumb {
+  width: 56px;
+  height: 56px;
+  border: 1px solid var(--border2);
+  background: rgba(0, 0, 0, 0.2);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+
 .file-preview-icon {
   color: var(--red);
   font-size: 20px;
+}
+
+#filePreviewImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+}
+
+#filePreviewPdf {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: none;
 }
 
 .file-preview-info {

@@ -120,7 +120,11 @@
           <input type="file" id="fileInput" accept=".pdf,.png,.jpg,.jpeg,.svg">
 
           <div class="file-preview" id="filePreview">
-            <div class="file-preview-icon">📄</div>
+            <div class="file-preview-thumb" id="fileThumb" aria-hidden="true">
+              <div class="file-preview-icon" id="filePreviewIcon">📄</div>
+              <img id="filePreviewImg" alt="" />
+              <iframe id="filePreviewPdf" title="PDF preview"></iframe>
+            </div>
             <div class="file-preview-info">
               <div class="file-preview-name" id="fileName">—</div>
               <div class="file-preview-size" id="fileSize">—</div>
@@ -369,28 +373,28 @@
       <div>
         <div class="footer-col-title">Platform</div>
         <ul class="footer-links">
-          <li><a href="#">Studio</a></li>
-          <li><a href="#">3D Viewer</a></li>
-          <li><a href="#">Collaboration</a></li>
-          <li><a href="#">API Access</a></li>
+          <li><a href="#upload">Studio</a></li>
+          <li><a href="#viewer">3D Viewer</a></li>
+          <li><a href="#workflow">Workflow</a></li>
+          <li><a href="#features">Explore Features</a></li>
         </ul>
       </div>
       <div>
         <div class="footer-col-title">Company</div>
         <ul class="footer-links">
-          <li><a href="#">About</a></li>
-          <li><a href="#">Careers</a></li>
-          <li><a href="#">Press</a></li>
-          <li><a href="#">Contact</a></li>
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#features">Capabilities</a></li>
+          <li><a href="#viewer">Viewer</a></li>
+          <li><a href="#upload">Open Studio</a></li>
         </ul>
       </div>
       <div>
         <div class="footer-col-title">Legal</div>
         <ul class="footer-links">
-          <li><a href="#">Privacy</a></li>
-          <li><a href="#">Terms</a></li>
-          <li><a href="#">Security</a></li>
-          <li><a href="#">Licenses</a></li>
+          <li><a href="#features">Licenses</a></li>
+          <li><a href="#features">Terms</a></li>
+          <li><a href="#features">Privacy</a></li>
+          <li><a href="#features">Security</a></li>
         </ul>
       </div>
     </div>
