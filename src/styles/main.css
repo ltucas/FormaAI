@@ -29,7 +29,7 @@ body {
   color: var(--text);
   font-family: 'DM Mono', monospace;
   overflow-x: hidden;
-  cursor: none;
+  cursor: auto;
 }
 
 /* CUSTOM CURSOR */
@@ -229,7 +229,7 @@ nav {
   font-size: 11px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  cursor: none;
+  cursor: pointer;
   transition: all 0.2s;
   text-decoration: none;
   display: inline-block;
@@ -249,7 +249,7 @@ nav {
   font-size: 11px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  cursor: none;
+  cursor: pointer;
   transition: all 0.2s;
   text-decoration: none;
   display: inline-block;
@@ -426,7 +426,7 @@ section {
   position: relative;
   overflow: hidden;
   background: var(--surface2);
-  cursor: none;
+  cursor: pointer;
 }
 
 .upload-zone.dragover,
@@ -510,7 +510,7 @@ section {
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  cursor: none;
+  cursor: pointer;
   transition: all 0.2s;
   width: 100%;
 }
@@ -556,7 +556,7 @@ section {
   padding: 10px 14px;
   font-family: 'DM Mono', monospace;
   font-size: 12px;
-  cursor: none;
+  cursor: pointer;
   appearance: none;
   width: 100%;
   outline: none;
@@ -579,7 +579,7 @@ section {
   height: 2px;
   background: var(--border2);
   outline: none;
-  cursor: none;
+  cursor: pointer;
 }
 
 .setting-slider::-webkit-slider-thumb {
@@ -588,7 +588,7 @@ section {
   height: 14px;
   background: var(--accent);
   border-radius: 50%;
-  cursor: none;
+  cursor: pointer;
 }
 
 .slider-val {
@@ -617,7 +617,7 @@ section {
   background: var(--border2);
   border-radius: 10px;
   position: relative;
-  cursor: none;
+  cursor: pointer;
   transition: background 0.2s;
 }
 
@@ -651,7 +651,7 @@ section {
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  cursor: none;
+  cursor: pointer;
   transition: all 0.2s;
   position: relative;
   overflow: hidden;
@@ -784,7 +784,7 @@ section {
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  cursor: none;
+  cursor: pointer;
   transition: all 0.2s;
 }
 
@@ -942,7 +942,7 @@ section {
   font-size: 11px;
   color: var(--text-dim);
   padding: 6px 8px;
-  cursor: none;
+  cursor: pointer;
   transition: background 0.2s;
 }
 
@@ -975,7 +975,7 @@ section {
   font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  cursor: none;
+  cursor: pointer;
   transition: all 0.2s;
   text-align: center;
 }
@@ -1227,7 +1227,7 @@ footer {
   font-family: 'DM Mono', monospace;
   font-size: 10px;
   padding: 4px 10px;
-  cursor: none;
+  cursor: pointer;
   transition: all 0.2s;
 }
 
